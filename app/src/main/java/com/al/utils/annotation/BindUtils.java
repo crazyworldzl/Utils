@@ -25,7 +25,7 @@ public class BindUtils {
                         Method[] declaredMethods = o.getClass().getDeclaredMethods();
                         for (final Method m:declaredMethods) {
                             m.setAccessible(true);
-                            if(m.getName().equals(anno.funcName())){
+                            if(m.getName().equals(anno.method())){
                                 o.findViewById(anno.id()).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

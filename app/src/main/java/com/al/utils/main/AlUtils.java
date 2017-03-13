@@ -1,13 +1,10 @@
 package com.al.utils.main;
 
 import android.app.Application;
-
 import com.al.utils.other.LogUtil;
-
 /**
  * Created by ZhangLong on 2017/3/10.
  */
-
 public class AlUtils {
     public static AlUtils al = new AlUtils();
     private static Application app;

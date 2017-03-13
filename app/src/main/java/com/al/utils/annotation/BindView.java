@@ -24,7 +24,7 @@ public @interface BindView {
      *
      * @return 点击事件方法名
      */
-    String funcName() default "onClick";
+    String method() default "onClick";
 
     /**
      *

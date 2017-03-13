@@ -170,7 +170,6 @@ public class ImageUtils
 
     /**
      * 通过反射获取imageview的某个属性值
-     *
      * @param object
      * @param fieldName
      * @return

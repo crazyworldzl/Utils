@@ -3,6 +3,7 @@ package com.al.utils.maintest;
 import android.app.Application;
 
 import com.al.utils.main.AlUtils;
+import com.al.utils.other.LogUtil;
 
 
 /**
