@@ -31,6 +31,7 @@ public class MainTest extends AppCompatActivity {
     @BindView(id = R.id.tv4, click = true, method = "hahah")
     TextView tv4;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
