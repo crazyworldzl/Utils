@@ -17,8 +17,11 @@ import com.al.utils.core.CoreActivity;
 import com.al.utils.main.AlUtils;
 import com.al.utils.okhttp.OkHttpUtils;
 import com.al.utils.okhttp.callback.Callback;
+import com.al.utils.okhttp.utils.ImageUtils;
 import com.al.utils.other.LogUtil;
 import com.al.utils.other.ToastUtil;
+
+import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -50,6 +53,30 @@ public class MainTest extends CoreActivity {
         switch (v.getId()) {
             case R.id.tv:
                 ToastUtil.text("11111111");
+                OkHttpUtils.get().url("http://op.juhe.cn/onebox/weather/query").addParams("cityname","杭州").addParams("key","08da3765803e802fbe5a1693b88de9d3").build().execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(final Response response, int id) throws Exception {
+                        final String s = response.body().string();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                    tv.setText(s);
+                            }
+                        });
+                        return null;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response, int id) {
+
+                    }
+                });
+
                 break;
         }
     }
@@ -77,10 +104,8 @@ public class MainTest extends CoreActivity {
 
                 @Override
                 public void onResponse(Object response, int id) {
-
                 }
             });
-
         }
         if (v.getId() == R.id.tv3) {
             ToastUtil.text("333333333333");
