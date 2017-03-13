@@ -8,14 +8,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:name=".maintest.App"
-        android:theme="@style/AppTheme">
-        <activity android:name=".maintest.MainTest">
+        android:theme="@style/AppTheme"
+        android:process="@string/process">
+        <activity android:name=".maintest.MainTest"
+            android:process="@string/process">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".maintest.TestActivity1"
+            android:process="@string/process"
+            />
     </application>
 
 </manifest>

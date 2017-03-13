@@ -1,5 +1,6 @@
 package com.al.utils.maintest;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.al.utils.R;
 import com.al.utils.annotation.BindUtils;
 import com.al.utils.annotation.BindView;
+import com.al.utils.core.CoreActivity;
+import com.al.utils.main.AlUtils;
 import com.al.utils.okhttp.OkHttpUtils;
 import com.al.utils.okhttp.callback.Callback;
 import com.al.utils.other.LogUtil;
@@ -20,7 +23,7 @@ import com.al.utils.other.ToastUtil;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class MainTest extends AppCompatActivity {
+public class MainTest extends CoreActivity {
     Handler handler = new Handler();
     @BindView(id = R.id.tv, click = true)
     TextView tv;
@@ -37,10 +40,10 @@ public class MainTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_test);
         BindUtils.bind(this);
-        LogUtil.d("hahahahahahahahah");
         tv.setText("hhhhhhhhjiji");
         tv3.setText("3333");
         tv4.setText("44444");
+        setTitle("hahahah");
     }
 
     public void onClick(View v) {
@@ -81,9 +84,11 @@ public class MainTest extends AppCompatActivity {
         }
         if (v.getId() == R.id.tv3) {
             ToastUtil.text("333333333333");
+            startActivity(new Intent(this,TestActivity1.class));
         }
         if (v.getId() == R.id.tv4) {
             ToastUtil.text("444444444");
+            AlUtils.al.getActivityMange().exit();
         }
     }
 }

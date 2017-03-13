@@ -1,7 +1,14 @@
 package com.al.utils.main;
 
+import android.app.Activity;
 import android.app.Application;
+
+import com.al.utils.other.ActivityManage;
 import com.al.utils.other.LogUtil;
+
+import java.lang.ref.WeakReference;
+import java.util.Stack;
+
 /**
  * Created by ZhangLong on 2017/3/10.
  */
@@ -10,6 +17,7 @@ public class AlUtils {
     private static Application app;
     private boolean isDebug;
     private String tag="zl";
+    private ActivityManage activityManage = new ActivityManage();
     public static AlUtils init(Application a) {
         if(al==null){
             al = new AlUtils();
@@ -20,7 +28,9 @@ public class AlUtils {
         }
         return al;
     }
-
+    public ActivityManage getActivityMange(){
+        return activityManage;
+    }
     public Application getApp() {
         return app;
     }
