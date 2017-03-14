@@ -1,8 +1,12 @@
 package com.al.utils.annotation;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+
+import com.al.utils.other.JSInterface;
+import com.al.utils.other.LogUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -13,24 +17,38 @@ import java.lang.reflect.Method;
  */
 
 public class BindUtils {
-    public static void bind(final Activity o) {
-        Field[] declaredFields = o.getClass().getDeclaredFields();
-        for (Field f : declaredFields) {
-            f.setAccessible(true);
-            BindView anno = f.getAnnotation(BindView.class);
-            if(anno==null)continue;
+    public static class view{
+        /**
+         *
+         * @param activity Activity
+         */
+        public static void bindView(final Activity activity) {
+            bindView(activity, activity.getWindow().getDecorView());
+        }
+
+        /**
+         *
+         * @param o
+         * @param view
+         */
+        public static void bindView(final Object o, final View view) {
+            Field[] declaredFields = o.getClass().getDeclaredFields();
+            Method[] declaredMethods = o.getClass().getDeclaredMethods();
+            for (Field f : declaredFields) {
+                f.setAccessible(true);
+                BindView anno = f.getAnnotation(BindView.class);
+                if (anno == null) continue;
                 try {
-                    f.set(o, o.findViewById(anno.id()));
-                    if(anno.click()){
-                        Method[] declaredMethods = o.getClass().getDeclaredMethods();
-                        for (final Method m:declaredMethods) {
+                    f.set(o, view.findViewById(anno.id()));
+                    if (anno.click()) {
+                        for (final Method m : declaredMethods) {
                             m.setAccessible(true);
-                            if(m.getName().equals(anno.method())){
-                                o.findViewById(anno.id()).setOnClickListener(new View.OnClickListener() {
+                            if (m.getName().equals(anno.method())) {
+                                view.findViewById(anno.id()).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         try {
-                                            m.invoke(o,v);
+                                            m.invoke(o, v);
                                         } catch (IllegalAccessException e) {
                                             e.printStackTrace();
                                         } catch (InvocationTargetException e) {
@@ -44,7 +62,34 @@ public class BindUtils {
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
+            }
         }
-
     }
+
+    public static class web{
+        /**
+         *
+         * @param o class;
+         * @param webView webview;
+         */
+        @SuppressLint("JavascriptInterface")
+        public static void bindJSInterface(Object o, WebView webView) {
+            Field[] declaredFields = o.getClass().getDeclaredFields();
+            Method[] methods = o.getClass().getDeclaredMethods();
+            for (Field f : declaredFields) {
+                BindJSInterface annotation = f.getAnnotation(BindJSInterface.class);
+                if (annotation == null) continue;
+                try {
+                    LogUtil.d("loading....");
+                    if(f.get(o) instanceof JSInterface){
+                        LogUtil.d("设置成功");
+                        webView.addJavascriptInterface(f.get(o),annotation.method());
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

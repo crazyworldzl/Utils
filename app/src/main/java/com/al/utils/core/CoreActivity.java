@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
+import com.al.utils.annotation.BindUtils;
+import com.al.utils.annotation.BindView;
 import com.al.utils.main.AlUtils;
 import com.al.utils.other.ActivityManage;
 import com.al.utils.other.LogUtil;
@@ -18,7 +20,6 @@ public abstract class CoreActivity extends Activity {
         super.onCreate(savedInstanceState);
         AlUtils.al.getActivityMange().pushActivity(this);
     }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==KeyEvent.KEYCODE_BACK){

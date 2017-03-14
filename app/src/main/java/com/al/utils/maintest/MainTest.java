@@ -42,7 +42,7 @@ public class MainTest extends CoreActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_test);
-        BindUtils.bind(this);
+        BindUtils.view.bindView(this);
         tv.setText("hhhhhhhhjiji");
         tv3.setText("3333");
         tv4.setText("44444");
@@ -76,7 +76,6 @@ public class MainTest extends CoreActivity {
 
                     }
                 });
-
                 break;
         }
     }

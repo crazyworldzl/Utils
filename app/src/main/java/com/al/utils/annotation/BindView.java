@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * Created by ZhangLong on 2017/3/10.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.FIELD})
 public @interface BindView {
     /**
      *

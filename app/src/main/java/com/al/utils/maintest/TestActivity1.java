@@ -1,5 +1,6 @@
 package com.al.utils.maintest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,6 +37,13 @@ public class TestActivity1 extends CoreActivity {
                 AlUtils.al.getActivityMange().AppExit();
             }
         });
+        Button button2 = new Button(this);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TestActivity1.this,TestWebView.class));
+            }
+        });
         button1.setText("exit");
         button.setText("click");
         EditText editText = new EditText(this);
@@ -48,6 +56,7 @@ public class TestActivity1 extends CoreActivity {
         });
         linearLayout.addView(button);
         linearLayout.addView(button1);
+        linearLayout.addView(button2);
         linearLayout.addView(editText);
         setTitle("TestActivity1");
         setContentView(linearLayout);
