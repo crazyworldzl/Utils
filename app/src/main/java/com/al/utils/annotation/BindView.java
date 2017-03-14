@@ -24,12 +24,12 @@ public @interface BindView {
      *
      * @return 点击事件方法名
      */
-    String method() default "onClick";
+    String clickMethod() default "onClick";
 
     /**
      *
      * @return 是否允许点击
      */
-    boolean click() default false;
+    boolean isClick() default false;
 
 }

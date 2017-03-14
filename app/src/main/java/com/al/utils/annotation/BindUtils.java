@@ -40,10 +40,10 @@ public class BindUtils {
                 if (anno == null) continue;
                 try {
                     f.set(o, view.findViewById(anno.id()));
-                    if (anno.click()) {
+                    if (anno.isClick()) {
                         for (final Method m : declaredMethods) {
                             m.setAccessible(true);
-                            if (m.getName().equals(anno.method())) {
+                            if (m.getName().equals(anno.clickMethod())) {
                                 view.findViewById(anno.id()).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -80,9 +80,7 @@ public class BindUtils {
                 BindJSInterface annotation = f.getAnnotation(BindJSInterface.class);
                 if (annotation == null) continue;
                 try {
-                    LogUtil.d("loading....");
                     if(f.get(o) instanceof JSInterface){
-                        LogUtil.d("设置成功");
                         webView.addJavascriptInterface(f.get(o),annotation.method());
                     }
                 } catch (IllegalAccessException e) {

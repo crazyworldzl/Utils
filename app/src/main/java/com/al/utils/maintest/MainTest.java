@@ -28,15 +28,16 @@ import okhttp3.Response;
 
 public class MainTest extends CoreActivity {
     Handler handler = new Handler();
-    @BindView(id = R.id.tv, click = true)
+    @BindView(id = R.id.tv, isClick = true)
     TextView tv;
-    @BindView(id = R.id.tv2, click = true, method = "hahah")
+    @BindView(id = R.id.tv2, isClick = true, clickMethod = "hahah")
     ImageButton tv2;
-    @BindView(id = R.id.tv3, click = true, method = "hahah")
+    @BindView(id = R.id.tv3, isClick = true, clickMethod = "hahah")
     TextView tv3;
-    @BindView(id = R.id.tv4, click = true, method = "hahah")
+    @BindView(id = R.id.tv4, isClick = true, clickMethod = "hahah")
     TextView tv4;
-
+    @BindView(id = R.id.tv5, isClick = true, clickMethod = "hahah")
+    TextView tv5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,8 @@ public class MainTest extends CoreActivity {
         tv3.setText("3333");
         tv4.setText("44444");
         setTitle("hahahah");
+        tv5.setText("去像样点的界面");
     }
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv:
@@ -113,6 +114,9 @@ public class MainTest extends CoreActivity {
         if (v.getId() == R.id.tv4) {
             ToastUtil.text("444444444");
             AlUtils.al.getActivityMange().exit();
+        }
+        if(v.getId() ==R.id.tv5){
+            startActivity(new Intent(this,MainActivity.class));
         }
     }
 }

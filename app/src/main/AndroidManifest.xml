@@ -22,6 +22,7 @@
             android:process="@string/process"
             />
         <activity android:name=".maintest.TestWebView"/>
+        <activity android:name=".maintest.MainActivity"/>
     </application>
 
 </manifest>

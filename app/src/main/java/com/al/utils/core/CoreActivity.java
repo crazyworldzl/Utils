@@ -1,20 +1,16 @@
 package com.al.utils.core;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
-import android.widget.EditText;
 
-import com.al.utils.annotation.BindUtils;
-import com.al.utils.annotation.BindView;
 import com.al.utils.main.AlUtils;
-import com.al.utils.other.ActivityManage;
 import com.al.utils.other.LogUtil;
 
 /**
  * Created by ZhangLong on 2017/3/13.
  */
-public abstract class CoreActivity extends Activity {
+public abstract class CoreActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
