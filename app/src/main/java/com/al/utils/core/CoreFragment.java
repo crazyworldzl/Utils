@@ -15,6 +15,6 @@ public abstract class CoreFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        BindUtils.bindView(this,view);
+        BindUtils.view.bindView(this,view);
     }
 }

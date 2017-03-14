@@ -1,7 +1,10 @@
 package com.al.utils.maintest;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -15,6 +18,8 @@ import com.al.utils.core.CoreActivity;
 import com.al.utils.other.JSInterface;
 import com.al.utils.other.LogUtil;
 import com.al.utils.other.ToastUtil;
+
+import java.net.URL;
 
 /**
  * Created by ZhangLong on 2017/3/14.
@@ -53,10 +58,9 @@ public class TestWebView extends CoreActivity {
                 view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
             }
-
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                webView.loadUrl(request.getUrl());
                 return super.shouldOverrideUrlLoading(view, request);
             }
         });
