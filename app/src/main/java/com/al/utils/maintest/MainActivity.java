@@ -35,13 +35,13 @@ public class MainActivity extends CoreActivity {
     RadioGroup rg;
     @BindView(id=R.id.main_vp)
     ViewPager vp;
+    List<Fragment>fragments = new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BindUtils.view.bindView(this);
-        List<Fragment>fragments = new ArrayList<>();
         fragments.add(new a());
         fragments.add(new b());
         fragments.add(new c());
@@ -57,8 +57,10 @@ public class MainActivity extends CoreActivity {
 
            @Override
            public void onPageSelected(int position) {
-               RadioButton childAt = (RadioButton) rg.getChildAt(position);
-               childAt.setChecked(true);
+               if(position<rg.getChildCount()) {
+                   RadioButton childAt = (RadioButton) rg.getChildAt(position);
+                   childAt.setChecked(true);
+               }
            }
 
            @Override
@@ -129,6 +131,7 @@ public class MainActivity extends CoreActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             Button button = new Button(container.getContext());
             button.setText("c");
+
             return button;
         }
     }
