@@ -10,11 +10,11 @@ import java.util.List;
  * Created by ZhangLong on 2017/3/14.
  */
 
-public abstract class CorePagerAdapter extends PagerAdapter {
+public  class CorePagerAdapter extends PagerAdapter {
 
     private List<View> dataList;
 
-    private void setData(List<View> list) {
+    public  void setData(List<View> list) {
         this.dataList = list;
         notifyDataSetChanged();
     }
