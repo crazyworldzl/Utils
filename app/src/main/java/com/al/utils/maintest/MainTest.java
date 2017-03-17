@@ -125,7 +125,7 @@ public class MainTest extends CoreActivity {
             ArrayList<MenuBean> objects = new ArrayList<>();
             MenuBean menuBean = new MenuBean(R.mipmap.ic_launcher, "haha", "haha");
             objects.add(menuBean);
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 27; i++) {
                 objects.add(new MenuBean(R.mipmap.ic_launcher,"hehe","="+i));
             }
             PopupMenu popupMenu = new PopupMenu(MainTest.this, objects);
@@ -138,10 +138,13 @@ public class MainTest extends CoreActivity {
             popupMenu.setBackgroundDrawable(new BitmapDrawable());
             popupMenu.setLineNumber(3).setVpBackgroundResource(R.drawable.background_shape).setBackgroundColor(0xff00ff00);
             popupMenu.setDecreaseHeight(200);
+            popupMenu.setShowDots(true);
             popupMenu.setVpTopPadding(30);
             popupMenu.setVpBottomPadding(30);
             popupMenu.setVpRightPadding(30);
             popupMenu.setVpLeftPadding(30);
+            popupMenu.setDotSize(30);
+            popupMenu.setDotBackgroundResource(R.drawable.rb_selector);
 //            popupMenu.setDecreaseWidth(400);
 //            popupMenu.setScrollViewPadding(50);
 //            popupMenu.setVpPadding(100);
