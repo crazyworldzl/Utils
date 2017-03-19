@@ -7,17 +7,22 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.al.utils.R;
+import com.al.utils.View.ScaleTransformer;
+import com.al.utils.View.ZoomOutPageTransformer;
 import com.al.utils.annotation.BindUtils;
 import com.al.utils.annotation.BindView;
 import com.al.utils.core.CoreActivity;
@@ -53,7 +58,7 @@ public class MainActivity extends CoreActivity {
         };
         vp.setAdapter(coreFragmentAdapter);
         coreFragmentAdapter.addData(fragments);
-        vp.setOffscreenPageLimit(-1);
+        vp.setOffscreenPageLimit(3);
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -93,6 +98,7 @@ public class MainActivity extends CoreActivity {
             }
         });
         ((RadioButton) rg.getChildAt(0)).setChecked(true);
+        initViewPager();
     }
 
     public static class a extends CoreFragment {
@@ -133,7 +139,59 @@ public class MainActivity extends CoreActivity {
             ToastUtil.text("hahahahahaVVVVVVV");
         }
     }
+    private void initViewPager() {
+        vp.setPageMargin(0);//设置页面的间距
+        vp.setOffscreenPageLimit(3);//设置缓存的页面数量
+        vp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+        vp.setPageTransformer(false, new ScaleTransformer());
+//        vp.setPageTransformer(true,new ZoomOutPageTransformer());
+//        vp.setPageTransformer(true,new ViewPager.PageTransformer(){
+//            private float DEFAULT_ALPHA=0.6F;
+//            private float mMinAlpha=DEFAULT_ALPHA;
+//            private float DEFALUT_SCALE=0.75F;
+//            private float mMinScale=DEFALUT_SCALE;
+//            @Override
+//            public void transformPage(View page, float position) {
+//                if(position< -1){
+//                    page.setAlpha(mMinAlpha);
+//                    page.setScaleY(mMinScale);
+//                    page.setScaleX(mMinScale);
+//                }else if(position<=1){
+//                    float alpha=0;
+//                    float scale= 0;
+//                    if(position<0){ //(0,-1]
+//                        //页面向左滑动
+//                        alpha= mMinAlpha + (1- mMinAlpha)* (1+ position);
+//                        scale = mMinScale + (1-mMinAlpha) * (1 + position);
+//                    }else{ //[1,0] //第二页面显示进来
+//                        alpha= mMinAlpha + (1- mMinAlpha)* (1-  position);
+//                        scale = mMinScale + (1-mMinAlpha) * (1 - position);
+//                    }
+//
+//                    page.setAlpha(alpha);
+//                    page.setScaleY(scale);
+//                    page.setScaleX(scale);
+//
+//                }else{
+//                    page.setAlpha(mMinAlpha);
+//                    page.setScaleY(mMinScale);
+//                    page.setScaleX(mMinScale);
+//                }
+//
+//            }
+//        });
+//                if(event.getAction()==MotionEvent.ACTION_MOVE){
+//                    swipeRefreshLayout.setEnabled(false);
+//                }else if(event.getAction()==MotionEvent.ACTION_UP){
+//                    swipeRefreshLayout.setEnabled(true);
+//                }
 
+    }
     public static class c extends CoreFragment {
         @Nullable
         @Override
@@ -182,4 +240,5 @@ public class MainActivity extends CoreActivity {
             return button;
         }
     }
+
 }
