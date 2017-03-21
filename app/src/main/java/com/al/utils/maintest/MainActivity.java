@@ -212,7 +212,6 @@ public class MainActivity extends CoreActivity {
                     -1.0f);
             mHiddenAction.setDuration(500);
             imageView.initAnimation(mShowAction, mHiddenAction);
-//            imageView.setAnimation(AnimationUtils.loadAnimation(container.getContext(),R.anim.shape));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
