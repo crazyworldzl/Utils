@@ -45,7 +45,7 @@ public class PermissionUtil {
      * @param context
      * @param permision
      * @param requestCode
-     * @return
+     * @return true:此权限已存在
      */
     public static boolean requestPermission(Activity context, String[] permision, int requestCode){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
