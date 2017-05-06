@@ -1,5 +1,6 @@
 package com.al.utils.maintest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,8 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -43,7 +46,10 @@ public class MainTest extends CoreActivity {
     TextView tv5;
     @BindView(id = R.id.tv6, isClick = true, clickMethod = "hahah")
     TextView tv6;
-
+    @BindView(id = R.id.tv7, isClick = true, clickMethod = "hahah")
+    TextView tv7;
+    @BindView(id = R.id.ctv, isClick = true, clickMethod = "hahah")
+    CheckedTextView ctv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +60,7 @@ public class MainTest extends CoreActivity {
         tv4.setText("44444");
         setTitle("hahahah");
         tv5.setText("去像样点的界面");
+        tv7.setText("testScrollView");
     }
 
     public void onClick(View v) {
@@ -121,6 +128,24 @@ public class MainTest extends CoreActivity {
             AlUtils.al.getActivityMange().exit();
         } else if (v.getId() == R.id.tv5) {
             startActivity(new Intent(this, MainActivity.class));
+        }else if(v.getId()==R.id.tv7){
+            startActivity(new Intent(this, TestScrollView.class));
+        } else if(v==ctv){
+           if(ctv.isChecked()){
+               new AlertDialog.Builder(v.getContext()).setMessage("是否关闭？").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       ctv.setChecked(false);
+                   }
+               }).setNegativeButton("否",null).create().show();
+           }else{
+               new AlertDialog.Builder(v.getContext()).setMessage("是否打开？").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       ctv.setChecked(true);
+                   }
+               }).setNegativeButton("否",null).create().show();
+           }
         } else if (v.getId() == R.id.tv6) {
             ArrayList<MenuBean> objects = new ArrayList<>();
             MenuBean menuBean = new MenuBean(R.mipmap.ic_launcher, "haha", "haha");

@@ -23,6 +23,7 @@
             />
         <activity android:name=".maintest.TestWebView"/>
         <activity android:name=".maintest.MainActivity"/>
+        <activity android:name=".maintest.TestScrollView"/>
     </application>
 
 </manifest>

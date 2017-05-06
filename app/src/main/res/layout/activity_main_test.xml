@@ -45,12 +45,15 @@
         android:id="@+id/tv6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/tv7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <CheckedTextView
-        android:gravity="center|center_horizontal"
+        android:id="@+id/ctv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_launcher"
-        android:textAlignment="center"
-        android:text="haha"
+        android:background="@drawable/check_select"
+        android:text="@drawable/text_select"
         />
 </LinearLayout>
