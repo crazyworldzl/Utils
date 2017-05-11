@@ -17,6 +17,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors{
+        releases{
+            applicationId "com.al.utils.a"
+            versionName "3.3.3"
+            buildConfigField("String","host","\"http://192.168.8.128:8080/nkcs/\"")
+            manifestPlaceholders = [CHANNEL_: "HAHAHHAHA"]
+        }
+        debugs{
+            applicationId "com.al.utils.b"
+            versionName "3.3.3"
+            buildConfigField("String","host","\"http://192.168.8.128:8080/nkcs/\"")
+            manifestPlaceholders = [CHANNEL_: "HEHEHHEHE"]
+        }
+        app_release{
+            applicationId "com.al.utils.c"
+            versionName "3.3.3"
+            buildConfigField("String","host","\"http://192.168.8.128:8080/nkcs/\"")
+            manifestPlaceholders = [CHANNEL_: "HAHEHAHEHAHE"]
+        }
+    }
 }
 
 dependencies {

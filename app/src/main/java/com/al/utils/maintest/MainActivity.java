@@ -13,16 +13,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.al.utils.R;
 import com.al.utils.View.ScaleTransformer;
-import com.al.utils.View.ZoomOutPageTransformer;
 import com.al.utils.annotation.BindUtils;
 import com.al.utils.annotation.BindView;
 import com.al.utils.core.CoreActivity;
@@ -99,6 +96,7 @@ public class MainActivity extends CoreActivity {
         });
         ((RadioButton) rg.getChildAt(0)).setChecked(true);
         initViewPager();
+
     }
 
     public static class a extends CoreFragment {

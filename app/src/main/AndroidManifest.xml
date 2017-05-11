@@ -10,6 +10,7 @@
         android:name=".maintest.App"
         android:theme="@style/AppTheme"
         android:process="@string/process">
+        <meta-data android:name="CHANNEL" android:value="${CHANNEL_}" />
         <activity android:name=".maintest.MainTest"
             android:process="@string/process">
             <intent-filter>

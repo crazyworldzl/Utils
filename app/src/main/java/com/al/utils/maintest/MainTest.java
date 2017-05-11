@@ -2,9 +2,14 @@ package com.al.utils.maintest;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +21,7 @@ import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.al.utils.BuildConfig;
 import com.al.utils.R;
 import com.al.utils.View.PopupMenu;
 import com.al.utils.annotation.BindUtils;
@@ -25,7 +31,13 @@ import com.al.utils.core.CoreActivity;
 import com.al.utils.main.AlUtils;
 import com.al.utils.okhttp.OkHttpUtils;
 import com.al.utils.okhttp.callback.Callback;
+import com.al.utils.okhttp.callback.StringCallback;
+import com.al.utils.okhttp.request.RequestCall;
+import com.al.utils.other.LogUtil;
 import com.al.utils.other.ToastUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -50,6 +62,7 @@ public class MainTest extends CoreActivity {
     TextView tv7;
     @BindView(id = R.id.ctv, isClick = true, clickMethod = "hahah")
     CheckedTextView ctv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +73,86 @@ public class MainTest extends CoreActivity {
         tv4.setText("44444");
         setTitle("hahahah");
         tv5.setText("去像样点的界面");
+        PackageInfo packageInfo = null;
+        ApplicationInfo activityInfo = null;
+        try {
+             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            activityInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String value = activityInfo.metaData.getString("CHANNEL");
+        tv6.setText(getPackageName()+":"+packageInfo.versionName+"---"+value);
         tv7.setText("testScrollView");
+        updata();
+    }
+
+    public void updata() {
+        PackageInfo pi = null;
+        try {
+            pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        final RequestCall build = OkHttpUtils.post().addParams("packageName", getApplication().getPackageName()).addParams("version", pi.versionName).addParams("type", "0").url(BuildConfig.host + "app/checkVersion").build();
+        build.execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                LogUtil.d(response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String code = jsonObject.getString("code");
+                    if (code.equals("10000")) {
+                        JSONObject content = jsonObject.getJSONObject("content");
+                        boolean isLatest = content.getBoolean("isLatest");
+                        if (isLatest) return;
+                        JSONObject latestApp = content.getJSONObject("latestApp");
+                        int id1 = latestApp.getInt("id");//	int	App id
+                        int productId = latestApp.getInt("productId");//	int	产品id
+                        int type = latestApp.getInt("type");//	int	类型：0安卓，1ios
+                        String version = latestApp.getString("version");//	String	版本号
+                        double mbSize = latestApp.getDouble("mbSize");//	double	包大小（mb）
+                        String packageName = latestApp.getString("packageName");//	String	包名
+                        int env = latestApp.getInt("env");//	int	环境：0正式，1测试
+                        String log = latestApp.getString("log");//String	更新日志信息
+                        final String url = latestApp.getString("url");//String	App下载地址
+                        boolean isForceUpdate = latestApp.getBoolean("isForceUpdate");//	boolean	是否强制更新
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainTest.this).setMessage(response).setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                final Uri uri = Uri.parse(url);
+                                final Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(it);
+                            }
+                        }).setCancelable(false);
+                        if (isForceUpdate) {
+                            builder.show();
+                        }else{
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                        }
+
+                    } else {
+                        return;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -128,30 +220,30 @@ public class MainTest extends CoreActivity {
             AlUtils.al.getActivityMange().exit();
         } else if (v.getId() == R.id.tv5) {
             startActivity(new Intent(this, MainActivity.class));
-        }else if(v.getId()==R.id.tv7){
+        } else if (v.getId() == R.id.tv7) {
             startActivity(new Intent(this, TestScrollView.class));
-        } else if(v==ctv){
-           if(ctv.isChecked()){
-               new AlertDialog.Builder(v.getContext()).setMessage("是否关闭？").setPositiveButton("是", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       ctv.setChecked(false);
-                   }
-               }).setNegativeButton("否",null).create().show();
-           }else{
-               new AlertDialog.Builder(v.getContext()).setMessage("是否打开？").setPositiveButton("是", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       ctv.setChecked(true);
-                   }
-               }).setNegativeButton("否",null).create().show();
-           }
+        } else if (v == ctv) {
+            if (ctv.isChecked()) {
+                new AlertDialog.Builder(v.getContext()).setMessage("是否关闭？").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ctv.setChecked(false);
+                    }
+                }).setNegativeButton("否", null).create().show();
+            } else {
+                new AlertDialog.Builder(v.getContext()).setMessage("是否打开？").setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ctv.setChecked(true);
+                    }
+                }).setNegativeButton("否", null).create().show();
+            }
         } else if (v.getId() == R.id.tv6) {
             ArrayList<MenuBean> objects = new ArrayList<>();
             MenuBean menuBean = new MenuBean(R.mipmap.ic_launcher, "haha", "haha");
             objects.add(menuBean);
             for (int i = 0; i < 27; i++) {
-                objects.add(new MenuBean(R.mipmap.ic_launcher,"hehe","="+i));
+                objects.add(new MenuBean(R.mipmap.ic_launcher, "hehe", "=" + i));
             }
             PopupMenu popupMenu = new PopupMenu(MainTest.this, objects);
             popupMenu.setItemLinstener(new PopupMenu.ItemClickLinstener() {
@@ -176,7 +268,7 @@ public class MainTest extends CoreActivity {
             popupMenu.setOutsideTouchDissmiss(true);
             popupMenu.setOutsideTouchable(true);
             popupMenu.setFocusable(true);
-            popupMenu.showAtLocation(getWindow().getDecorView(), Gravity.CENTER,-1,-1);
+            popupMenu.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, -1, -1);
         }
     }
 }
