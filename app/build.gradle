@@ -10,30 +10,38 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors{
-        releases{
+    productFlavors {
+        // minifyEnabled 混淆处理
+        // shrinkResources 去除无用资源
+        // signingConfig 签名
+        // proguardFiles 混淆配置
+        // applicationIdSuffix 增加APP ID的后缀
+        // debuggable 是否保留调试信息
+        releases {
             applicationId "com.al.utils.a"
             versionName "3.3.3"
-            buildConfigField("String","host","\"http://192.168.8.128:8080/nkcs/\"")
+            buildConfigField("String", "host", "\"http://192.168.8.128:8080/nkcs/\"")
             manifestPlaceholders = [CHANNEL_: "HAHAHHAHA"]
         }
-        debugs{
+        debugs {
             applicationId "com.al.utils.b"
             versionName "3.3.3"
-            buildConfigField("String","host","\"http://192.168.8.128:8080/nkcs/\"")
+            buildConfigField("String", "host", "\"http://192.168.8.128:8080/nkcs/\"")
             manifestPlaceholders = [CHANNEL_: "HEHEHHEHE"]
         }
-        app_release{
+        app_release {
             applicationId "com.al.utils.c"
             versionName "3.3.3"
-            buildConfigField("String","host","\"http://192.168.8.128:8080/nkcs/\"")
+            buildConfigField("String", "host", "\"http://192.168.8.128:8080/nkcs/\"")
             manifestPlaceholders = [CHANNEL_: "HAHEHAHEHAHE"]
         }
     }
@@ -44,4 +52,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup:otto:1.3.8'
 }

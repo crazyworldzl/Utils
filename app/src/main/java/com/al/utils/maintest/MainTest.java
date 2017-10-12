@@ -2,7 +2,6 @@ package com.al.utils.maintest;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,9 +12,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
@@ -45,7 +47,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class MainTest extends CoreActivity {
-    Handler handler = new Handler();
     @BindView(id = R.id.tv, isClick = true)
     TextView tv;
     @BindView(id = R.id.tv2, isClick = true, clickMethod = "hahah")
@@ -60,8 +61,44 @@ public class MainTest extends CoreActivity {
     TextView tv6;
     @BindView(id = R.id.tv7, isClick = true, clickMethod = "hahah")
     TextView tv7;
+    @BindView(id = R.id.tv8, isClick = true, clickMethod = "hahah")
+    TextView tv8;
+    @BindView(id = R.id.tv9, isClick = true, clickMethod = "hahah")
+    TextView tv9;
     @BindView(id = R.id.ctv, isClick = true, clickMethod = "hahah")
     CheckedTextView ctv;
+
+    public final int START = 1;
+    public final int STOP = 2;
+    private Handler handler = new Handler() {
+        boolean b;
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case START:
+                    b = true;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            while (b) {
+                                SystemClock.sleep(1);
+                                handler.sendEmptyMessage(3);
+                            }
+                        }
+                    }.start();
+                    break;
+                case STOP:
+                    b = false;
+                    break;
+                case 3:
+                    tv8.setText(getString(R.string.data, c, c++));
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,21 +110,47 @@ public class MainTest extends CoreActivity {
         tv4.setText("44444");
         setTitle("hahahah");
         tv5.setText("去像样点的界面");
+        tv7.setText("testScrollView");
+        tv8.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        handler.sendEmptyMessage(START);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        handler.sendEmptyMessage(STOP);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        handler.sendEmptyMessage(STOP);
+                        break;
+                }
+                return false;
+            }
+        });
+        tv8.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                LogUtil.d(hasFocus + "");
+                if (!hasFocus) {
+                    handler.sendEmptyMessage(STOP);
+                }
+            }
+        });
+        updata();
+    }
+
+    public void updata() {
         PackageInfo packageInfo = null;
         ApplicationInfo activityInfo = null;
         try {
-             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             activityInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         String value = activityInfo.metaData.getString("CHANNEL");
-        tv6.setText(getPackageName()+":"+packageInfo.versionName+"---"+value);
-        tv7.setText("testScrollView");
-        updata();
-    }
-
-    public void updata() {
+        tv6.setText(getPackageName() + ":" + packageInfo.versionName + "---" + value);
         PackageInfo pi = null;
         try {
             pi = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -133,7 +196,7 @@ public class MainTest extends CoreActivity {
                         }).setCancelable(false);
                         if (isForceUpdate) {
                             builder.show();
-                        }else{
+                        } else {
                             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -186,6 +249,8 @@ public class MainTest extends CoreActivity {
         }
     }
 
+    int c;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void hahah(View v) {
         if (v.getId() == R.id.tv2) {
@@ -222,6 +287,12 @@ public class MainTest extends CoreActivity {
             startActivity(new Intent(this, MainActivity.class));
         } else if (v.getId() == R.id.tv7) {
             startActivity(new Intent(this, TestScrollView.class));
+        } else if(v.getId() == R.id.tv9) {
+            startActivity(new Intent(this,TestWebView.class));
+        } else if (v.getId() == R.id.tv8) {
+            TextView v1 = (TextView) v;
+            v1.setText(getString(R.string.data, c, c + 3));
+            c++;
         } else if (v == ctv) {
             if (ctv.isChecked()) {
                 new AlertDialog.Builder(v.getContext()).setMessage("是否关闭？").setPositiveButton("是", new DialogInterface.OnClickListener() {

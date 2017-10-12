@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 
+import com.al.utils.EventBus.AppBus;
 import com.al.utils.main.AlUtils;
 import com.al.utils.other.LogUtil;
 
@@ -24,8 +25,16 @@ public abstract class CoreActivity extends FragmentActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AppBus.getInstance().register(this);
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
+        AppBus.getInstance().unregister(this);
     }
 }
